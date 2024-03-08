@@ -31,7 +31,8 @@
         }
 
         button {
-            padding: 10px 20px;
+            width: 300px;
+            padding: 10px;
             border-radius: 5px;
             background-color: #4CAF50;
             color: white;
@@ -62,6 +63,7 @@
         }
 
         .delete {
+            width: 50px;
             background-color: #f44336;
             border-radius: 5px;
             border: none;
@@ -74,6 +76,18 @@
         .delete:hover {
             background-color: #da190b;
         }
+
+        /* Media Queries for smaller screens */
+        @media (max-width: 600px) {
+            input[type="text"],
+            button,
+            ul {
+                width: 100%;
+            }
+            button, .delete {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -81,7 +95,7 @@
         <h2>Shopping List</h2>
         <input type="text" id="taskInput" placeholder="Enter item">
         <button onclick="addTask()">Add Item</button>
-        <button onclick="clearAllTasks()">Clear All</button> <!-- Added Clear All button -->
+        <button onclick="clearAllTasks()">Clear All</button>
         <ul id="taskList"></ul>
     </div>
 
