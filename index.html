@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,19 +78,24 @@
             background-color: #da190b;
         }
 
-        /* Media Queries for smaller screens */
         @media (max-width: 600px) {
+
             input[type="text"],
             button,
             ul {
                 width: 100%;
             }
-            button, .delete {
+
+            button,
+            .delete {
                 width: 100%;
+                margin-bottom: 10px;
+                /* Add margin between buttons */
             }
         }
     </style>
 </head>
+
 <body>
     <div>
         <h2>Shopping List</h2>
@@ -103,15 +109,15 @@
         function getTasks() {
             return JSON.parse(localStorage.getItem('tasks')) || [];
         }
-    
+
         function saveTasks(tasks) {
             localStorage.setItem('tasks', JSON.stringify(tasks));
         }
-    
+
         function isTaskExists(task, tasks) {
             return tasks.includes(task);
         }
-    
+
         function displayTasks() {
             const taskList = document.getElementById('taskList');
             taskList.innerHTML = '';
@@ -135,7 +141,7 @@
             const taskInput = document.getElementById('taskInput');
             taskInput.focus();
         }
-    
+
         function addTask() {
             const taskInput = document.getElementById('taskInput');
             const task = taskInput.value.trim();
@@ -156,8 +162,9 @@
             localStorage.removeItem('tasks');
             displayTasks();
         }
-    
+
         displayTasks();
-    </script>    
+    </script>
 </body>
+
 </html>
