@@ -172,12 +172,12 @@
         }
         function exportTasks() {
             const tasks = getTasks();
-            const jsonTasks = JSON.stringify(tasks);
-            const blob = new Blob([jsonTasks], { type: 'application/json' });
+            const csvContent = 'Item\n' + tasks.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'shopping_list.json';
+            a.download = 'shopping_list.csv';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -186,7 +186,7 @@
         function importTasks() {
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
-            fileInput.accept = '.json';
+            fileInput.accept = '.csv';
             fileInput.addEventListener('change', handleFileSelect);
             fileInput.click();
 
@@ -197,17 +197,22 @@
                     reader.onload = function (e) {
                         const content = e.target.result;
                         try {
-                            const importedTasks = JSON.parse(content);
+                            const importedTasks = content
+                                .trim()
+                                .split('\n')
+                                .slice(1)
+                                .map((line) => line.trim());
                             saveTasks(importedTasks);
                             displayTasks();
                         } catch (error) {
-                            alert('Error parsing the file. Please make sure it is a valid JSON file.');
+                            alert('Error processing the file. Please check the CSV format.');
                         }
                     };
                     reader.readAsText(file);
                 }
             }
         }
+
         displayTasks();
     </script>
 </body>
