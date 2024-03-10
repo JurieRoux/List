@@ -88,23 +88,16 @@
 
             button.delete {
                 width: 50%;
-                margin-bottom: 5px;
+                margin-bottom: 10px;
                 /* Add margin between buttons */
             }
-            button {
-            width: 75%;
-            margin-bottom: 10px; /* Add space between buttons */
-            }
-            .button-container {
-        text-align: center;
-            }
+           
         }
     </style>
 </head>
 
 <body>
-    <h2>Shopping List</h2>
-<!--     <div>
+    <div>
         <h2>Shopping List</h2>
         <input type="text" id="taskInput" placeholder="Enter item">
         <button onclick="addTask()">Add Item</button>
@@ -112,14 +105,8 @@
         <button onclick="exportTasks()">Export List</button>
         <button onclick="importTasks()">Import List</button>
         <ul id="taskList"></ul>
-    </div> -->
-<div class="button-container">
-     <input type="text" id="taskInput" placeholder="Enter item">
-    <button onclick="addTask()">Add Item</button>
-    <button onclick="clearAllTasks()">Clear All</button>
-    <button onclick="exportTasks()">Export List</button>
-    <button onclick="importTasks()">Import List</button>
-</div>
+    </div>
+
     <script>
         function getTasks() {
             return JSON.parse(localStorage.getItem('tasks')) || [];
