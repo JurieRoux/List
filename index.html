@@ -86,12 +86,12 @@
                 width: 100%;
             }
 
-            button.delete {
-                width: 50%;
+            button,
+            .delete {
+                width: 100%;
                 margin-bottom: 10px;
                 /* Add margin between buttons */
             }
-           
         }
     </style>
 </head>
@@ -102,8 +102,6 @@
         <input type="text" id="taskInput" placeholder="Enter item">
         <button onclick="addTask()">Add Item</button>
         <button onclick="clearAllTasks()">Clear All</button>
-        <button onclick="exportTasks()">Export List</button>
-        <button onclick="importTasks()">Import List</button>
         <ul id="taskList"></ul>
     </div>
 
@@ -164,43 +162,7 @@
             localStorage.removeItem('tasks');
             displayTasks();
         }
-        function exportTasks() {
-            const tasks = getTasks();
-            const jsonTasks = JSON.stringify(tasks);
-            const blob = new Blob([jsonTasks], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'shopping_list.json';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-        function importTasks() {
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = '.json';
-            fileInput.addEventListener('change', handleFileSelect);
-            fileInput.click();
 
-            function handleFileSelect(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const content = e.target.result;
-                        try {
-                            const importedTasks = JSON.parse(content);
-                            saveTasks(importedTasks);
-                            displayTasks();
-                        } catch (error) {
-                            alert('Error parsing the file. Please make sure it is a valid JSON file.');
-                        }
-                    };
-                    reader.readAsText(file);
-                }
-            }
-        }
         displayTasks();
     </script>
 </body>
