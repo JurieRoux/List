@@ -95,9 +95,6 @@
                 margin-bottom: 10px;
                 /* Add margin between buttons */
             }
-             ul {
-            margin: 0 auto; /* Center the list */
-            }
         }
     </style>
 </head>
@@ -172,12 +169,12 @@
         }
         function exportTasks() {
             const tasks = getTasks();
-            const csvContent = 'Item\n' + tasks.join('\n');
-            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const jsonTasks = JSON.stringify(tasks);
+            const blob = new Blob([jsonTasks], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'shopping_list.csv';
+            a.download = 'shopping_list.json';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -186,7 +183,7 @@
         function importTasks() {
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
-            fileInput.accept = '.csv';
+            fileInput.accept = '.json';
             fileInput.addEventListener('change', handleFileSelect);
             fileInput.click();
 
@@ -197,22 +194,17 @@
                     reader.onload = function (e) {
                         const content = e.target.result;
                         try {
-                            const importedTasks = content
-                                .trim()
-                                .split('\n')
-                                .slice(1)
-                                .map((line) => line.trim());
+                            const importedTasks = JSON.parse(content);
                             saveTasks(importedTasks);
                             displayTasks();
                         } catch (error) {
-                            alert('Error processing the file. Please check the CSV format.');
+                            alert('Error parsing the file. Please make sure it is a valid JSON file.');
                         }
                     };
                     reader.readAsText(file);
                 }
             }
         }
-
         displayTasks();
     </script>
 </body>
