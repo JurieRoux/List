@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping List</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            background-color: #e4e4e4;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .task-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .task-form input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            margin-bottom: 10px; /* Spacing between input and first button */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #addTaskButton {
+            background-color: #0d9e2d; /* Green */
+        }
+
+        #clearAllTasksButton {
+            background-color: #ff0000; /* Red */
+        }
+
+        #exportTasksButton {
+            background-color: #ffa500; /* Orange */
+        }
+
+        #importTasksButton {
+            background-color: #808080; /* Grey */
+        }
+
+      .button-container button {
+        width: 300px;
+        padding: 10px;
+        border-radius: 5px;
+        background-image: radial-gradient(circle at center,#0d9e2d 65%,#00ff0d 100%);
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-image 0.3s ease;
+        margin-bottom: 10px; /* Spacing between buttons */
+      }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            width: 300px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .delete {
+            background-image: linear-gradient(to right, #f44336 0%, #d32f2f 100%);
+            border-radius: 5px;
+            border: none;
+            color: white;
+            padding: 8px;
+            cursor: pointer;
+            transition: background-image 0.3s ease;
+        }
+
+        .delete:hover {
+            background-image: linear-gradient(to right, #d32f2f 0%, #c62828 100%);
+        }
+
+        @media (max-width) {
+            .task-form input[type="text"],
+            .button-container button,
+            ul {
+                width: 100%; /* Ensure full width for smaller screens */
+                box-sizing: border-box; /* Include padding and border in the element's total width */
+            }
+
+            .button-container button,
+            .task-form input[type="text"] {
+                margin: 5px 0; /* Add some vertical spacing */
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Shopping List</h2>
+    <form class="task-form" id="taskForm">
+        <input
+            type="text"
+            id="taskInput"
+            placeholder="Enter item"
+            aria-label="Item name"
+        />
+    </form>
+    <div class="button-container">
+        <button type="submit" form="taskForm" id="addTaskButton">Add Item</button>
+        <button id="clearAllTasksButton">Clear All</button>
+        <button id="exportTasksButton">Export List</button>
+        <button id="importTasksButton">Import List</button>
+    </div>
+    <ul id="taskList"></ul>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document
+            .getElementById("taskForm")
+            .addEventListener("submit", function (event) {
+                event.preventDefault(); // Prevent the default form submission
+                addTask();
+            });
+        document
+            .getElementById("clearAllTasksButton")
+            .addEventListener("click", clearAllTasks);
+        document
+            .getElementById("exportTasksButton")
+            .addEventListener("click", exportTasks);
+        document
+            .getElementById("importTasksButton")
+            .addEventListener("click", importTasks);
+        displayTasks();
+    });
+
+    function getTasks() {
+        return JSON.parse(localStorage.getItem("tasks")) || [];
+    }
+
+    function saveTasks(tasks) {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    function displayTasks() {
+        const taskList = document.getElementById("taskList");
+        taskList.innerHTML = "";
+        const tasks = getTasks();
+        tasks.forEach((task, index) => {
+            const li = document.createElement("li");
+            li.textContent = task;
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.classList.add("delete");
+            deleteButton.addEventListener("click", function () {
+                removeTask(index);
+            });
+            li.appendChild(deleteButton);
+            taskList.appendChild(li);
+        });
+    }
+
+    function addTask() {
+        const taskInput = document.getElementById("taskInput");
+        const task = taskInput.value.trim();
+        if (task !== "") {
+            const tasks = getTasks();
+            if (!tasks.includes(task.toLowerCase())) {
+                tasks.push(task);
+                saveTasks(tasks);
+                displayTasks();
+                taskInput.value = ""; // Clear the input field
+            } else {
+                alert("This item is already in the list!");
+            }
+        }
+    }
+
+    function removeTask(index) {
+        let tasks = getTasks();
+        tasks.splice(index, 1);
+        saveTasks(tasks);
+        displayTasks();
+    }
+
+    function clearAllTasks() {
+        localStorage.removeItem("tasks");
+        displayTasks();
+    }
+
+    function exportTasks() {
+        const tasks = getTasks();
+        const jsonTasks = JSON.stringify(tasks);
+        const blob = new Blob([jsonTasks], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "shopping_list.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    function importTasks() {
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = ".json";
+        fileInput.onchange = function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    try {
+                        const tasks = JSON.parse(e.target.result);
+                        saveTasks(tasks);
+                        displayTasks();
+                    } catch (error) {
+                        alert("Error parsing the file.");
+                    }
+                };
+                reader.readAsText(file);
+            }
+        };
+        fileInput.click();
+    }
+</script>
+</body>
+</html>
