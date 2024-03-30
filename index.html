@@ -64,17 +64,24 @@
             background-color: #808080; /* Grey */
         }
 
-      .button-container button {
-        width: 300px;
-        padding: 10px;
-        border-radius: 5px;
-        background-image: radial-gradient(circle at center,#0d9e2d 65%,#00ff0d 100%);
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-image 0.3s ease;
-        margin-bottom: 10px; /* Spacing between buttons */
-      }
+        .button-container button {
+            width: 300px;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px; /* Spacing between buttons */
+        }
+
+        /* Add hover effects */
+        #addTaskButton:hover,
+        #clearAllTasksButton:hover,
+        #exportTasksButton:hover,
+        #importTasksButton:hover {
+            opacity: 0.8;
+        }
 
         ul {
             list-style-type: none;
@@ -109,7 +116,7 @@
             background-image: linear-gradient(to right, #d32f2f 0%, #c62828 100%);
         }
 
-        @media (max-width) {
+        @media (max-width: 768px) {
             .task-form input[type="text"],
             .button-container button,
             ul {
