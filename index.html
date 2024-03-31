@@ -5,132 +5,134 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shopping List</title>
     <style>
-        body {
-            font-family: "Arial", sans-serif;
-            background-color: #e4e4e4;
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding-top: 20px;
-            height: 100vh;
-        }
+       body {
+    font-family: "Arial", sans-serif;
+    background-color: #e4e4e4;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 20px;
+    height: 100vh;
+}
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        h2 {
-            color: #333;
-        }
+h2 {
+    color: #333;
+}
 
-        .task-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+.task-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        .task-form input[type="text"] {
-            width: 300px;
-            padding: 10px;
-            margin-bottom: 10px; /* Spacing between input and first button */
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
+.task-form input[type="text"] {
+    width: 300px;
+    padding: 10px;
+    margin-bottom: 10px; /* Spacing between input and first button */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
 
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        #addTaskButton {
-            background-color: #0d9e2d; /* Green */
-        }
+.button-container button {
+    width: 300px;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px; /* Spacing between buttons */
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); /* Added shadow for 3D effect */
+}
 
-        #clearAllTasksButton {
-            background-color: #ff0000; /* Red */
-        }
+#addTaskButton {
+    background-color: #0d9e2d; /* Green */
+}
 
-        #exportTasksButton {
-            background-color: #ffa500; /* Orange */
-        }
+#clearAllTasksButton {
+    background-color: #ff0000; /* Red */
+}
 
-        #importTasksButton {
-            background-color: #666666; /* Grey */
-        }
+#exportTasksButton {
+    background-color: #ffa500; /* Orange */
+}
 
-        .button-container button {
-            width: 300px;
-            padding: 10px;
-            border-radius: 5px;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-bottom: 10px; /* Spacing between buttons */
-        }
+#importTasksButton {
+    background-color: #666666; /* Grey */
+}
 
-        /* Add hover effects */
-        #addTaskButton:hover,
-        #clearAllTasksButton:hover,
-        #exportTasksButton:hover,
-        #importTasksButton:hover {
-            opacity: 0.8;
-        }
+#addTaskButton:hover,
+#clearAllTasksButton:hover,
+#exportTasksButton:hover,
+#importTasksButton:hover {
+    opacity: 0.8;
+}
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-            width: 300px;
-            max-height: 60vh;
-            overflow-y: auto;
-        }
+ul {
+    list-style-type: none;
+    padding: 0;
+    width: 300px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
 
-        li {
-            background-color: #fff;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+li {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-        .delete {
-            background-image: linear-gradient(to right, #f44336 0%, #d32f2f 100%);
-            border-radius: 5px;
-            border: none;
-            color: white;
-            padding: 8px;
-            cursor: pointer;
-            transition: background-image 0.3s ease;
-        }
+.delete {
+    background-image: linear-gradient(to right, #f44336 0%, #d32f2f 100%);
+    border-radius: 5px;
+    border: none;
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+    transition: background-image 0.3s ease;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); /* Added shadow for 3D effect */
+}
 
-        .delete:hover {
-            background-image: linear-gradient(to right, #d32f2f 0%, #c62828 100%);
-        }
+.delete:hover {
+    background-image: linear-gradient(to right, #d32f2f 0%, #c62828 100%);
+}
 
-        @media (max-width) {
-            .task-form input[type="text"],
-            .button-container button,
-            ul {
-                width: 100%; /* Ensure full width for smaller screens */
-                box-sizing: border-box; /* Include padding and border in the element's total width */
-            }
+@media (max-width) {
+    .task-form input[type="text"],
+    .button-container button,
+    ul {
+        width: 100%; /* Ensure full width for smaller screens */
+        box-sizing: border-box; /* Include padding and border in the element's total width */
+    }
 
-            .button-container button,
-            .task-form input[type="text"] {
-                margin: 5px 0; /* Add some vertical spacing */
-                width: 100%;
-            }
-        }
+    .button-container button,
+    .task-form input[type="text"] {
+        margin: 5px 0; /* Add some vertical spacing */
+        width: 100%;
+    }
+}
+
     </style>
 </head>
 <body>
